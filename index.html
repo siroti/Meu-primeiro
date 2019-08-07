@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>BRASILEIRÃO - 2019</title>
+        <link href="./bootstrap.min.css" type="text/css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet"> 
+        <link href="./css.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <h5 class="text-center title_m">CAMPEONATOS</h5>
+            <h3 class="text-center tille_g">BRASILEIRÃO - 2019</h3>
+            <table class="table table-striped" id="result">
+                <tr>
+                    <td></td>
+                    <td>Classificação</td>
+                    <td class="text-center">Vitórias</td>
+                    <td class="text-center">Empates</td>
+                    <td class="text-center">Derrotas</td>
+                    <td class="text-center">Pontos</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+    <script type="text/javascript" src="./jquery.min.js"></script>
+    <script>
+        var id = 2013;
+        $.ajax({
+            headers: { 'X-Auth-Token': '7b74fe84935d4ad5835fd4e803aa6123' },
+            url: 'http://api.football-data.org/v2/competitions/'+id+'/standings',
+            dataType: 'json',
+            type: 'GET',
+        }).done(function(response) {
+            (function () {
+                var data = response.standings;
+                methodCount = data.length;
+                for (i = 0; i < methodCount; i++) {
+                    if(data[i]['type'] == "TOTAL"){
+                        var table = data[i]['table'];
+                        tableCount = table.length;
+                        for (i = 0; i < tableCount; i++) {
+                            console.log(table[i]['team']);
+                            $( "#result" ).append( "<tr><td class='position'><span class='time'>"+table[i]['position']+"° </span><img src='./images/"+table[i]['team']['id']+".png' width='20'> </td><td>"+table[i]['team']['name']+"</td><td class='text-center'>"+table[i]['won']+"</td><td class='text-center'>"+table[i]['draw']+"</td><td class='text-center'>"+table[i]['lost']+"</td><td class='text-center'>"+table[i]['points']+"</td></tr>" );
+                        }
+                    }
+                }       
+            }());
+        });
+    </script>
+</html>
